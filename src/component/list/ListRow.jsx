@@ -1,7 +1,9 @@
 import styles from "./ListRow.module.css";
 
-const ListCell = ({ children }) => {
-  return <tr className={styles.cell}>{children}</tr>;
+const ListCell = ({ children , clickedData  }) => {
+
+  return <tr className={styles.cell} onClick={clickedData} >{children}</tr>;
+ 
 };
 
 export default ListCell;

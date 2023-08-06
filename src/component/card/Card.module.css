@@ -2,6 +2,7 @@
   background-color: #043463;
   border-radius: 1em;
   color: white;
+  width : 50%;
 }
 
 .cell {
@@ -9,7 +10,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 1em;
   padding: 1em;
-  background-color: rgba(255, 255, 255, 0.089);
+  background-color: rgba(139, 127, 127, 0.089);
 }
 
 .title {

@@ -6,7 +6,8 @@ import ListHeaderCell from "./ListHeaderCell";
 
 import styles from "./List.module.css";
 
-const List = ({ rows }) => {
+const List = ({ rows, rows2, currency, rowClick }) => {
+
   return (
     <table className={styles.container}>
       <thead>
@@ -15,17 +16,18 @@ const List = ({ rows }) => {
           <ListHeaderCell>Buy/Sell</ListHeaderCell>
           <ListHeaderCell>Country</ListHeaderCell>
           <ListHeaderCell>Order Submitted</ListHeaderCell>
-          <ListHeaderCell>Order Volume / USD</ListHeaderCell>
+          <ListHeaderCell>Order Volume / {currency}</ListHeaderCell>
         </ListHeader>
       </thead>
       <tbody>
-        {rows.map((row) => (
-          <ListRow>
+        {rows.map((row,i) => (
+          
+          <ListRow key={i} clickedData={() => rowClick(row, rows2.find((data) => data["&id"] === row["&id"]))}>
             <ListRowCell>{row["&id"]}</ListRowCell>
             <ListRowCell>{row.executionDetails.buySellIndicator}</ListRowCell>
             <ListRowCell>{row.executionDetails.orderStatus}</ListRowCell>
-            <ListRowCell>{row.orderSubmitted}</ListRowCell>
-            <ListRowCell>{row.bestExecutionData.orderVolume.USD}</ListRowCell>
+            <ListRowCell>{rows2.find((row2) => row2["&id"] === row["&id"] ).timestamps.orderSubmitted}</ListRowCell>
+            <ListRowCell>{row.bestExecutionData.orderVolume[currency]}</ListRowCell>
           </ListRow>
         ))}
       </tbody>

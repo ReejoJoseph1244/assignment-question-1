@@ -19,15 +19,28 @@ const Dashboard = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedOrderDetails, setSelectedOrderDetails] = useState({});
   const [selectedOrderTimeStamps, setSelectedOrderTimeStamps] = useState({});
+  const [filteredRows, setFilteredRows] = useState([]);
+
+  function searchFilter(value)
+  {
+    setSearchText(value);
+    setFilteredRows(mockData.results.filter(row => row["&id"] === value));
+    
+  }
+  const handleRowClick = (row1, row2) => {
+    setSelectedOrderDetails(row1);
+    setSelectedOrderTimeStamps(row2);
+  };
+
 
   return (
     <div>
       <div className={styles.header}>
-        <HeaderTitle primaryTitle="Orders" secondaryTitle="5 orders" />
+        <HeaderTitle primaryTitle="Orders" secondaryTitle={mockData.results.length + " orders"} />
         <div className={styles.actionBox}>
           <Search
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) => searchFilter(e.target.value)}
           />
           <Dropdown
             options={["GBP", "USD", "JPY", "EUR"]}
@@ -37,19 +50,22 @@ const Dashboard = () => {
         </div>
       </div>
       <div className={styles.content}>
-        <div className={styles.section}>
+        <div className={styles.section} style={{display:"flex", flexDirection:"row"}}>
           <Card
-            cardData={selectedOrderDetails}
+            cardData={Object.keys(selectedOrderDetails).length>0 ? selectedOrderDetails.executionDetails : selectedOrderDetails }
             title="Selected Order Details"
           />
           <Card
-            cardData={selectedOrderTimeStamps}
+            cardData={  Object.keys(selectedOrderTimeStamps).length>0 ?  selectedOrderTimeStamps.timestamps : selectedOrderTimeStamps } 
             title="Selected Order Timestamps"
           />
         </div>
-        <List rows={mockData.results} />
+        { searchText.length === 0 ? <List rows={mockData.results} rows2={timestamps.results} currency={currency} rowClick={handleRowClick} />
+            : <List rows={filteredRows} rows2={timestamps.results} currency={currency} rowClick={handleRowClick} />
+        }
+        
       </div>
-    </div>
+    </div> 
   );
 };
 
